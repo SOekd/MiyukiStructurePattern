@@ -3,6 +3,8 @@ package app.miyuki.miyukistructurepattern.structure;
 import app.miyuki.miyukistructurepattern.MiyukiStructurePattern;
 import app.miyuki.miyukistructurepattern.configuration.Configuration;
 import app.miyuki.miyukistructurepattern.message.MessageLoader;
+import app.miyuki.miyukistructurepattern.structure.schematic.SchematicStructure;
+import app.miyuki.miyukistructurepattern.structure.schematic.SchematicStructureConstructor;
 import app.miyuki.miyukistructurepattern.util.hand.HandUtil;
 import app.miyuki.miyukistructurepattern.util.player.PlayerUtil;
 import com.google.common.collect.ImmutableList;
@@ -14,14 +16,24 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
 public class StructureListener implements Listener {
 
-    private static final List<Action> ALLOWED_ACTIONS = ImmutableList.of(Action.RIGHT_CLICK_BLOCK, Action.RIGHT_CLICK_AIR);
+    private static final List<Action> PLACE_ACTIONS = ImmutableList.of(
+            Action.RIGHT_CLICK_BLOCK,
+            Action.RIGHT_CLICK_AIR
+    );
+
+    private static final List<Action> ROTATE_ACTIONS = ImmutableList.of(
+            Action.LEFT_CLICK_AIR,
+            Action.LEFT_CLICK_BLOCK
+    );
 
     @NotNull
     private MiyukiStructurePattern plugin;
@@ -54,9 +66,23 @@ public class StructureListener implements Listener {
         if (structure == null)
             return;
 
+        val distance = Math.max(
+                configuration.getRoot().node("distance").getInt(6),
+                structure.getDistance()
+        );
+
         val constructor = (StructureConstructor<Structure>) plugin.getStructureConstructor(structure.getType());
 
-        if (!ALLOWED_ACTIONS.contains(event.getAction())) {
+        if (!PLACE_ACTIONS.contains(event.getAction())) {
+
+            if (structure.getType() == StructureType.SCHEMATIC && ROTATE_ACTIONS.contains(event.getAction())) {
+                SchematicStructureConstructor schematicConstructor = (SchematicStructureConstructor) plugin.getStructureConstructor(StructureType.SCHEMATIC);
+                schematicConstructor.rotate(player, (SchematicStructure) structure);
+
+                constructor.preview(player, PlayerUtil.getCorrectTargetLocation(player, distance), structure);
+                return;
+            }
+
             if (configuration.getRoot().node("preview", "shift").getBoolean(false) && !player.isSneaking()) {
                 return;
             }
@@ -64,11 +90,6 @@ public class StructureListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> constructor.refreshPreview(player), 1L);
             return;
         }
-
-        val distance = Math.max(
-                configuration.getRoot().node("distance").getInt(6),
-                structure.getDistance()
-        );
 
         if (constructor.construct(player, PlayerUtil.getCorrectTargetLocation(player, distance), structure)) {
             if (isMainHand) {
@@ -87,6 +108,15 @@ public class StructureListener implements Listener {
         if (StructureUtil.hasStructureId(event.getItem())) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        val player = event.getPlayer();
+
+        Arrays.stream(StructureType.values())
+                .map(plugin::getStructureConstructor)
+                .forEach(constructor -> constructor.clearPreview(player));
     }
 
 }

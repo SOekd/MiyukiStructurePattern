@@ -136,8 +136,12 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
                         int offsetY = i - centerY;
 
                         Location blockLocation = origin.clone().add(offsetX, y - 1.0, offsetY);
+                        Block block = blockLocation.getBlock();
 
                         if (!canPlace(structure, player, blockLocation))
+                            continue;
+
+                        if (structure.isOnlyAir() && block.getType() != Material.AIR)
                             continue;
 
                         placeBlock = true;

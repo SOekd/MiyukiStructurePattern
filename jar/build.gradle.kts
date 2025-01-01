@@ -14,6 +14,7 @@ dependencies {
         "plotsquared",
         "griefprevention",
         "griefdefender",
+        "worldedit-6",
     ).forEach {
         implementation(project(":miyukistructurepattern-$it"))
     }

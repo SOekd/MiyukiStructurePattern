@@ -175,11 +175,11 @@ public class StructureLoaderImpl implements StructureLoader {
 
 
                 val rotationEnabled = node.node("rotation", "enabled").getBoolean(false);
-                val rotationDegrees = node.node("rotation", "degrees").getInt(90);
+                val rotationDefaultOffsetDegrees = node.node("rotation", "default-offset").getInt(0);
 
                 loadedStructures.put(
                         key.toLowerCase(Locale.ROOT),
-                        new SchematicStructure(type, key, direction, onlyAir, item, cannotPlaceItem, iterations, distance, sound, particleType, particlesAmount, compatibility, schematicFile, rotationEnabled, rotationDegrees)
+                        new SchematicStructure(type, key, direction, onlyAir, item, cannotPlaceItem, iterations, distance, sound, particleType, particlesAmount, compatibility, schematicFile, rotationEnabled, rotationDefaultOffsetDegrees)
                 );
 
             }

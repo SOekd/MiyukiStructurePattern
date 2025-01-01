@@ -77,7 +77,7 @@ house:
   compatibility:
     - 'PLOTSQUARED-LEGACY'
 
-  distance: 12
+  distance: 8
 
   item:
     material: 'paper'
@@ -85,6 +85,8 @@ house:
     name: '<gradient:#59ff78:#69ffcd>House</gradient>'
     lore:
       - '<gray>Amazing house!'
+
+  sound: 'DIG_STONE'
 
   particles:
     particle: 'BLOCK_DUST'
@@ -96,8 +98,8 @@ house:
   rotation:
     enabled: true
 
-    # The player can rotate the structure in 90-degree increments
-    degrees: 90
+    # In case the structure is rotated, the default offset will be 0 degrees
+    default-offset: '0'
 
   # The schematic file must be placed in the plugin's schematics folder
-  schematic: 'house.schem'
+  schematic: 'house.schematic'

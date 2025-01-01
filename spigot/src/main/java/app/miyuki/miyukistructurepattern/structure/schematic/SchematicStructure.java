@@ -25,7 +25,7 @@ public class SchematicStructure extends Structure {
 
     private final boolean rotationEnabled;
 
-    private final int rotationDegrees;
+    private final int defaultRotationOffset;
 
     public SchematicStructure(
             @NotNull StructureType type,
@@ -42,7 +42,7 @@ public class SchematicStructure extends Structure {
             @NotNull List<@NotNull String> compatibilities,
             @NotNull File schematic,
             boolean rotationEnabled,
-            int rotationDegrees
+            int defaultRotationOffset
     ) {
         super(
                 type,
@@ -60,7 +60,7 @@ public class SchematicStructure extends Structure {
         );
         this.schematic = schematic;
         this.rotationEnabled = rotationEnabled;
-        this.rotationDegrees = rotationDegrees;
+        this.defaultRotationOffset = defaultRotationOffset;
     }
 
 

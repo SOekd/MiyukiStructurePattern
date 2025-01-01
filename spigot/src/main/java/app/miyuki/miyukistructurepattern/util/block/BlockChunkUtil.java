@@ -23,6 +23,7 @@ public class BlockChunkUtil {
 
             // 1.16.5 maybe it's needed, i'll check it later
             int chunkY = 0;
+
             int chunkZ = loc.getBlockZ() >> 4;
 
             Vector3i chunkCoord = new Vector3i(chunkX, chunkY, chunkZ);
