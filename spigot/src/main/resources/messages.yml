@@ -1,0 +1,14 @@
+
+no-permission: '<red>You do not have permission to use this command.'
+
+give:
+  usage: '<red>Usage: <gray>/give <player> <structure> <amount>'
+  player-not-found: '<red>Player not found.'
+  invalid-amount: '<red>Invalid amount.'
+  structure-not-found: '<red>Structure not found.'
+  success: '<green>You gave the structure <yellow>{structure} <green>to <yellow>{player} <green>successfully.'
+
+structure-placed:
+  sound: 'ENTITY_PLAYER_LEVELUP'
+
+reloaded: '<green>Plugin reloaded successfully.'

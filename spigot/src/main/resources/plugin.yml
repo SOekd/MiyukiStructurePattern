@@ -1,0 +1,17 @@
+name: MiyukiStructurePattern
+version: 1.0.0
+main: app.miyuki.miyukistructurepattern.MiyukiStructurePattern
+author: SOekd
+softdepend:
+  - PlotSquared
+  - GriefPrevention
+  - GriefDefender
+commands:
+  givestructurepattern:
+    description: "Give a structure pattern"
+    usage: "/givestructurepattern <player> <pattern>"
+    permission: "miyukistructurepattern.give"
+  reloadstructurepattern:
+    description: "Reload structure patterns"
+    usage: "/reloadstructurepattern"
+    permission: "miyukistructurepattern.reload"

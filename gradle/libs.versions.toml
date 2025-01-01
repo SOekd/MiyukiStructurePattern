@@ -1,0 +1,73 @@
+[versions]
+shadow = "8.1.1"
+
+kyori-commons = "4.17.0"
+kyori-platform = "4.3.3"
+
+lombok = "1.18.26"
+jetbrains-annotations = "24.0.1"
+
+configurate-yaml = "4.2.0-SNAPSHOT"
+
+xseries = "12.1.0"
+
+itemnbtapi = "2.14.1"
+bstats = "3.0.2"
+
+plotsquared-legacy = "3.823"
+plotsquared-modern = "1.43"
+
+griefprevention = "16.18.2"
+griefdefender = "2.1.0-SNAPSHOT"
+
+fastparticles = "2.0.1"
+
+worldedit-v6 = "6.0.0-SNAPSHOT"
+worldedit-v7 = "7.0.0"
+
+worldguard-v6 = "6.0.0-SNAPSHOT"
+worldguard-v7 = "7.0.0"
+
+
+packetevents = "2.7.0"
+
+paper = "1.20.4-R0.1-SNAPSHOT"
+[libraries]
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+
+shadow = { module = "com.github.johnrengelman:shadow", version.ref = "shadow" }
+
+fastparticles = { module = "fr.mrmicky:FastParticles", version.ref = "fastparticles" }
+
+kyori-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "kyori-commons" }
+kyori-serializer-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "kyori-commons" }
+kyori-serializer-gson = { module = "net.kyori:adventure-text-serializer-gson", version.ref = "kyori-commons" }
+kyori-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "kyori-commons" }
+
+kyori-platform-bukkit = { module = "net.kyori:adventure-platform-bukkit", version.ref = "kyori-platform" }
+
+plotsquared-bom = { module = "com.intellectualsites.bom:bom-newest", version.ref = "plotsquared-modern" }
+plotsquared-core = { module = "com.intellectualsites.plotsquared:plotsquared-core" }
+plotsquared-bukkit = { module = "com.intellectualsites.plotsquared:plotsquared-bukkit" }
+
+plotsquared-legacy = { module = "ci.athion.net:PlotSquared-Bukkit", version.ref = "plotsquared-legacy" }
+
+griefprevention = { module = "com.github.GriefPrevention:GriefPrevention", version.ref = "griefprevention" }
+griefdefender = { module = "com.griefdefender:api", version.ref = "griefdefender" }
+
+worldedit-v6 = { module = "com.sk89q:worldedit", version.ref = "worldedit-v6" }
+worldedit-v7 = { module = "com.sk89q.worldedit:worldedit-bukkit", version.ref = "worldedit-v7" }
+
+worldguard-v6 = { module = "com.sk89q.worldguard:worldguard", version.ref = "worldguard-v6" }
+worldguard-v7 = { module = "com.sk89q.worldguard:worldguard-bukkit", version.ref = "worldguard-v7" }
+
+xseries = { module = "com.github.cryptomorin:XSeries", version.ref = "xseries" }
+itemnbtapi = { module = "de.tr7zw:item-nbt-api", version.ref = "itemnbtapi" }
+bstats = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
+
+configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate-yaml" }
+
+packetevents = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents" }

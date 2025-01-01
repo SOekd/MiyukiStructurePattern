@@ -1,0 +1,17 @@
+preview:
+  enabled: true
+
+  # How many ticks between each preview update.
+  # Be careful with very low values!
+  # 20 ticks = 1 second
+  update-ticks: 5
+
+  # Preview will only activate if the player holds shift
+  shift: false
+
+animation:
+
+  enabled: true
+
+  # How many milliseconds between each block being placed to give an animation effect
+  delay: 50

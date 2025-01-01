@@ -1,0 +1,103 @@
+cactus:
+
+  # Two types of structures:
+  # - PATTERN: The structure will be placed block by block
+  # - SCHEMATIC: The structure will be placed using a schematic file
+  type: 'PATTERN'
+
+  # The item will only be placed where there is air.
+  only-air: true
+
+  # This will be the block that appears in place of the block that cannot be placed during the preview
+  cannot-place: 'RED_STAINED_GLASS'
+
+  # Compatible with:
+  # - PlotSquared-LEGACY (PlotSquared 1.8.8 - 1.12)
+  # - PlotSquared (PlotSquared 7) (untested)
+  # - GriefPrevention (untested)
+  # - GriefDefender (untested)
+  compatibility:
+    - 'PLOTSQUARED-LEGACY'
+
+  # The distance in blocks the player can place the structure
+  distance: 5
+
+  item:
+    material: 'CACTUS'
+    name: '<gradient:#00ff00:#ff0000>Cactus</gradient>'
+    lore:
+      - '<gray>Create a powerful cactus structure!'
+
+  # Vertical: The structure will be placed from the bottom to the top
+  # Horizontal: The structure will be placed from the left to the right
+  animation-direction: 'VERTICAL'
+
+  # Sound that will be played when the structure is placed
+  sound: 'DIG_STONE'
+
+  particles:
+    particle: 'BLOCK_DUST'
+    amount: 10
+
+  # How many times the structure will repeat (upwards)
+  # In this case, it will create 2 levels of cacti.
+  iterations: 2
+
+  blocks:
+    'C': 'CACTUS'
+    'X': 'AIR'
+    'M': 'DARK_OAK_WOOD'
+    'A': 'SAND'
+
+  pattern:
+    '1':
+      - 'XMX'
+      - 'MXM'
+      - 'XMX'
+    '2':
+      - 'XAX'
+      - 'AXA'
+      - 'XAX'
+    '3':
+      - 'XCX'
+      - 'CXC'
+      - 'XCX'
+    '4':
+      - 'XXX'
+      - 'XMX'
+      - 'XXX'
+
+house:
+  type: 'SCHEMATIC'
+
+  only-air: true
+
+  cannot-place: 'RED_STAINED_GLASS'
+
+  compatibility:
+    - 'PLOTSQUARED-LEGACY'
+
+  distance: 12
+
+  item:
+    material: 'paper'
+    model-data: 237
+    name: '<gradient:#59ff78:#69ffcd>House</gradient>'
+    lore:
+      - '<gray>Amazing house!'
+
+  particles:
+    particle: 'BLOCK_DUST'
+    amount: 10
+
+  animation-direction: 'VERTICAL'
+
+  # Enable the rotation of the structure
+  rotation:
+    enabled: true
+
+    # The player can rotate the structure in 90-degree increments
+    degrees: 90
+
+  # The schematic file must be placed in the plugin's schematics folder
+  schematic: 'house.schem'
