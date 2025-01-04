@@ -13,7 +13,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class AnimatedStructureWorkload implements ScheduledWorkload {
 
-    private final Queue<StructureBlock> blocks;
+    private final Queue<StructureBlock<Object>> blocks;
 
     private final Structure structure;
 
@@ -42,12 +42,12 @@ public class AnimatedStructureWorkload implements ScheduledWorkload {
         if (structure.isOnlyAir() && block.getType() != Material.AIR)
             return;
 
-        BlockUtil.setType(block, structureBlock.getMaterial());
+        BlockUtil.setType(structureBlock);
 
-        val particle = structure.getParticle();
-        if (particle != null) {
-            particle.spawn(blockLocation.getWorld(), blockLocation, structure.getParticleAmount());
-        }
+//        val particle = structure.getParticle();
+//        if (particle != null) {
+//            particle.spawn(blockLocation.getWorld(), blockLocation, structure.getParticleAmount());
+//        }
 
         if (structure.getSound() != null) {
             XSound.of(structure.getSound()).ifPresent(sound -> sound.play(blockLocation));

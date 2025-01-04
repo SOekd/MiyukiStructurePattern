@@ -5,50 +5,33 @@ import app.miyuki.miyukistructurepattern.schematic.SchematicReader;
 import app.miyuki.miyukistructurepattern.schematic.SchematicVector;
 import app.miyuki.miyukistructurepattern.util.math.MathUtils;
 import com.google.common.collect.Maps;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.blocks.BlockData;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.transform.BlockTransformExtent;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.math.transform.AffineTransform;
-import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.block.BlockState;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.val;
 import lombok.var;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class WorldEdit6 implements SchematicReader {
-
-    private static MethodHandle getMaterialHandle;
-
-    private final Map<Integer, Material> materialMap = Maps.newHashMap();
+public class WorldEdit7 implements SchematicReader {
 
     private final Map<File, Map<Integer, Schematic>> schematicCache = Maps.newHashMap();
-
-    static {
-        try {
-            MethodHandles.Lookup lookup = MethodHandles.lookup();
-            Method getMaterialMethod = Material.class.getMethod("getMaterial", int.class);
-            getMaterialHandle = lookup.unreflect(getMaterialMethod);
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-            getMaterialHandle = null;
-        }
-    }
 
     @SneakyThrows
     @Override
@@ -72,14 +55,14 @@ public class WorldEdit6 implements SchematicReader {
             return null;
         }
 
-        final Vector minimumPoint = clipboard.getMinimumPoint();
-        final Vector maximumPoint = clipboard.getMaximumPoint();
-        final int minX = (int) minimumPoint.getX();
-        final int maxX = (int) maximumPoint.getX();
-        final int minY = (int) minimumPoint.getY();
-        final int maxY = (int) maximumPoint.getY();
-        final int minZ = (int) minimumPoint.getZ();
-        final int maxZ = (int) maximumPoint.getZ();
+        final BlockVector3 minimumPoint = clipboard.getMinimumPoint();
+        final BlockVector3 maximumPoint = clipboard.getMaximumPoint();
+        final int minX = minimumPoint.getX();
+        final int maxX = maximumPoint.getX();
+        final int minY = minimumPoint.getY();
+        final int maxY = maximumPoint.getY();
+        final int minZ = minimumPoint.getZ();
+        final int maxZ = maximumPoint.getZ();
 
         int totalX = 0;
         int totalZ = 0;
@@ -95,33 +78,23 @@ public class WorldEdit6 implements SchematicReader {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    val currentVector = new Vector(x, y, z);
-                    val block = clipboard.getBlock(currentVector);
-
-                    int blockId = block.getId();
-                    int blockData = block.getData();
+                    val currentVector = BlockVector3.at(x, y, z);
+                    BlockState block = clipboard.getBlock(currentVector);
 
                     for (int i = 0; i < (roundedDegree / 90); i++) {
-                        blockData = BlockData.rotate90(blockId, block.getData());
+                        block = BlockTransformExtent.transform(block, affineTransform);
                     }
 
-                    val material = materialMap.computeIfAbsent(blockId, id -> {
-                        try {
-                            return (Material) getMaterialHandle.invoke(id);
-                        } catch (Throwable throwable) {
-                            return Material.AIR;
-                        }
-                    });
-
-                    if (ignoreAir && material == Material.AIR) {
+                    if (ignoreAir && block.getBlockType().getMaterial().isAir()) {
                         continue;
                     }
 
-                    val materialData = new MaterialData(material, (byte) blockData);
 
-                    val newVector = affineTransform.apply(currentVector);
+                    BlockData blockData = BukkitAdapter.adapt(block);
 
-                    rotatedBlocks.add(new RotatedBlock(newVector, materialData));
+                    val newVector = affineTransform.apply(Vector3.at(x, y, z));
+
+                    rotatedBlocks.add(new RotatedBlock(newVector, blockData));
                 }
             }
         }
@@ -161,21 +134,17 @@ public class WorldEdit6 implements SchematicReader {
     }
 
     private static class RotatedBlock {
-        Vector vector;
-        MaterialData item;
+        Vector3 vector;
+        BlockData item;
 
-        RotatedBlock(Vector vector, MaterialData item) {
+        RotatedBlock(Vector3 vector, BlockData item) {
             this.vector = vector;
             this.item = item;
         }
     }
 
     private ClipboardFormat findClipboardFormat(File file) {
-        return ClipboardFormat.findByFile(file);
-    }
-
-    private World getAnyWorld() {
-        return BukkitUtil.getLocalWorld(Bukkit.getWorlds().get(0));
+        return ClipboardFormats.findByFile(file);
     }
 
     @SneakyThrows
@@ -189,9 +158,7 @@ public class WorldEdit6 implements SchematicReader {
         }
 
         val clipboardReader = clipboardFormat.getReader(bufferedInputStream);
-        val worldData = getAnyWorld().getWorldData();
-        return clipboardReader.read(worldData);
+        return clipboardReader.read();
     }
-
 
 }

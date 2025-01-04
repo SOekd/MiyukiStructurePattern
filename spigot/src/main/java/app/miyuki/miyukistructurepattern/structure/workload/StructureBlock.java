@@ -2,30 +2,29 @@ package app.miyuki.miyukistructurepattern.structure.workload;
 
 import lombok.Data;
 import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Data
-public class StructureBlock {
+public class StructureBlock<D> {
 
     private final Location location;
 
-    private final ItemStack material;
+    private final D itemData;
 
     public static class Sorter {
 
-        public static void sortVertically(List<StructureBlock> structureBlocks) {
+        public static <D> void sortVertically(List<StructureBlock<D>> structureBlocks) {
             structureBlocks.sort(Comparator
-                    .<StructureBlock>comparingDouble(block -> block.getLocation().getY())
+                    .<StructureBlock<D>>comparingDouble(block -> block.getLocation().getY())
                     .thenComparingDouble(block -> block.getLocation().getX())
                     .thenComparingDouble(block -> block.getLocation().getZ()));
         }
 
-        public static void sortHorizontally(List<StructureBlock> structureBlocks) {
+        public static <D> void sortHorizontally(List<StructureBlock<D>> structureBlocks) {
             structureBlocks.sort(Comparator
-                    .<StructureBlock>comparingDouble(block -> block.getLocation().getX())
+                    .<StructureBlock<D>>comparingDouble(block -> block.getLocation().getX())
                     .thenComparingDouble(block -> block.getLocation().getY())
                     .thenComparingDouble(block -> block.getLocation().getZ()));
         }

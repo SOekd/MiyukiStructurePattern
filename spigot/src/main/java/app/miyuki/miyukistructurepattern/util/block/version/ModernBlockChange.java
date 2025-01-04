@@ -8,18 +8,20 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerMu
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import lombok.val;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ModernBlockChange implements BlockChange {
+public class ModernBlockChange implements BlockChange<BlockData> {
 
     @Override
-    public void sendFakeBlockChange(@NotNull Player player, @NotNull List<StructureBlock> blocks) {
-        BlockChunkUtil.groupStructureBlockByChunk(blocks).forEach((chunk, chunkBlocks) -> {
+    public void sendFakeBlockChange(@NotNull Player player, @NotNull List<StructureBlock<BlockData>> structureBlocks) {
+        BlockChunkUtil.groupStructureBlockByChunk(structureBlocks).forEach((chunk, chunkBlocks) -> {
             WrapperPlayServerMultiBlockChange.EncodedBlock[] encodedBlocks = chunkBlocks.stream()
                     .map(this::createEncodedBlock)
                     .toArray(WrapperPlayServerMultiBlockChange.EncodedBlock[]::new);
@@ -29,9 +31,15 @@ public class ModernBlockChange implements BlockChange {
     }
 
     @Override
-    public void setType(@NotNull Block block, @NotNull ItemStack item) {
-        block.setType(item.getType());
+    public void setType(@NotNull StructureBlock<BlockData> item) {
+        val location = item.getLocation();
+        val block = location.getBlock();
+
+        location.getBlock().setType(item.getItemData().getMaterial(), false);
+        block.setBlockData(item.getItemData());
+
     }
+
 
     @Override
     public void clearFakeBlockChange(@NotNull Player player, @NotNull List<Location> locations) {
@@ -44,10 +52,23 @@ public class ModernBlockChange implements BlockChange {
         });
     }
 
-    private WrapperPlayServerMultiBlockChange.EncodedBlock createEncodedBlock(StructureBlock structureBlock) {
-        val blockData = SpigotConversionUtil.fromBukkitBlockData(
-                structureBlock.getMaterial().getType().createBlockData()
-        );
+    @Override
+    public @NotNull BlockData extractData(@NotNull Block block) {
+        return block.getBlockData();
+    }
+
+    @Override
+    public @NotNull BlockData extractData(@NotNull ItemStack itemStack) {
+        return itemStack.getType().createBlockData();
+    }
+
+    @Override
+    public boolean isAir(@NotNull BlockData itemData) {
+        return itemData.getMaterial() == Material.AIR;
+    }
+
+    private WrapperPlayServerMultiBlockChange.EncodedBlock createEncodedBlock(StructureBlock<BlockData> structureBlock) {
+        val blockData = SpigotConversionUtil.fromBukkitBlockData(structureBlock.getItemData());
         return new WrapperPlayServerMultiBlockChange.EncodedBlock(
                 blockData,
                 structureBlock.getLocation().getBlockX(),

@@ -43,6 +43,7 @@ public enum CompatibilityType {
                 .filter(type -> type.name().equalsIgnoreCase(name.replace("-", "_")))
                 .map(CompatibilityType::getCompatibility)
                 .filter(Objects::nonNull)
+                .filter(Compatibility::supports)
                 .findAny()
                 .orElse(null);
     }

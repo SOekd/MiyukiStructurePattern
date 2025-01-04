@@ -11,7 +11,7 @@ import org.bukkit.Material;
 @RequiredArgsConstructor
 public class StructureWorkload implements Workload {
 
-    private final StructureBlock structureBlock;
+    private final StructureBlock<Object> structureBlock;
 
     private final Structure structure;
 
@@ -24,7 +24,7 @@ public class StructureWorkload implements Workload {
         if (structure.isOnlyAir() && block.getType() != Material.AIR)
             return;
 
-        BlockUtil.setType(block, structureBlock.getMaterial());
+        BlockUtil.setType(structureBlock);
 
         val particle = structure.getParticle();
         if (particle != null) {

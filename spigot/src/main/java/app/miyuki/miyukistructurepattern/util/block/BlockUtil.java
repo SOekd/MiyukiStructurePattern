@@ -16,11 +16,10 @@ import java.util.List;
 @UtilityClass
 public class BlockUtil {
 
-
-    private static final BlockChange BLOCK_CHANGE;
+    private static final BlockChange<Object> BLOCK_CHANGE;
 
     static {
-        BlockChange tempBlockChange;
+        BlockChange<?> tempBlockChange;
 
         try {
             Class.forName("org.bukkit.block.data.BlockData");
@@ -29,10 +28,10 @@ public class BlockUtil {
             tempBlockChange = new LegacyBlockChange();
         }
 
-        BLOCK_CHANGE = tempBlockChange;
+        BLOCK_CHANGE = (BlockChange<Object>) tempBlockChange;
     }
 
-    public void sendFakeBlockChange(@NotNull Player player, @NotNull List<StructureBlock> blocks) {
+    public void sendFakeBlockChange(@NotNull Player player, @NotNull List<StructureBlock<Object>> blocks) {
         BLOCK_CHANGE.sendFakeBlockChange(player, blocks);
     }
 
@@ -40,8 +39,19 @@ public class BlockUtil {
         BLOCK_CHANGE.clearFakeBlockChange(player, locations);
     }
 
-    public void setType(@NotNull Block block, @NotNull ItemStack item) {
-        BLOCK_CHANGE.setType(block, item);
+    public Object extractData(Block block) {
+        return BLOCK_CHANGE.extractData(block);
     }
 
+    public Object extractData(ItemStack itemStack) {
+        return BLOCK_CHANGE.extractData(itemStack);
+    }
+
+    public boolean isAir(Object itemData) {
+        return BLOCK_CHANGE.isAir(itemData);
+    }
+
+    public void setType(@NotNull StructureBlock<Object> block) {
+        BLOCK_CHANGE.setType(block);
+    }
 }

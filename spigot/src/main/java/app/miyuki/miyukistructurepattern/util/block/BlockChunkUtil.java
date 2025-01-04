@@ -1,6 +1,8 @@
 package app.miyuki.miyukistructurepattern.util.block;
 
 import app.miyuki.miyukistructurepattern.structure.workload.StructureBlock;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.util.Vector3i;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
@@ -13,16 +15,18 @@ import java.util.Map;
 @UtilityClass
 public class BlockChunkUtil {
 
-    public static Map<Vector3i, List<StructureBlock>> groupStructureBlockByChunk(List<StructureBlock> blocks) {
-        Map<Vector3i, List<StructureBlock>> chunkMap = new HashMap<>();
+    public <D> Map<Vector3i, List<StructureBlock<D>>> groupStructureBlockByChunk(List<StructureBlock<D>> blocks) {
+        Map<Vector3i, List<StructureBlock<D>>> chunkMap = new HashMap<>();
 
-        for (StructureBlock block : blocks) {
+        for (StructureBlock<D> block : blocks) {
             Location loc = block.getLocation();
 
             int chunkX = loc.getBlockX() >> 4;
 
-            // 1.16.5 maybe it's needed, i'll check it later
             int chunkY = 0;
+            if (usesChunkY()) {
+                chunkY = loc.getBlockY() >> 4;
+            }
 
             int chunkZ = loc.getBlockZ() >> 4;
 
@@ -39,7 +43,12 @@ public class BlockChunkUtil {
 
         for (Location loc : locations) {
             int chunkX = loc.getBlockX() >> 4;
+
             int chunkY = 0;
+            if (usesChunkY()) {
+                chunkY = loc.getBlockY() >> 4;
+            }
+
             int chunkZ = loc.getBlockZ() >> 4;
 
             Vector3i chunkCoord = new Vector3i(chunkX, chunkY, chunkZ);
@@ -48,6 +57,10 @@ public class BlockChunkUtil {
         }
 
         return chunkMap;
+    }
+
+    private boolean usesChunkY() {
+        return PacketEvents.getAPI().getServerManager().getVersion().isNewerThan(ServerVersion.V_1_16_2);
     }
 
 }

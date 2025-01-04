@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PatternStructureConstructor implements StructureConstructor<PatternStructure> {
 
-    private final Map<UUID, List<StructureBlock>> cachedPreview = Maps.newConcurrentMap();
+    private final Map<UUID, List<StructureBlock<Object>>> cachedPreview = Maps.newConcurrentMap();
 
     private final WorkloadRunnable workloadRunnable;
 
@@ -61,7 +61,7 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
 
         val pattern = structure.getPattern();
 
-        List<StructureBlock> preview = new ArrayList<>();
+        List<StructureBlock<Object>> preview = new ArrayList<>();
 
         for (int iteration = 0; iteration < structure.getIterations(); iteration++) {
             for (int y : pattern.keySet().stream().mapToInt(Integer::intValue).sorted().toArray()) {
@@ -90,16 +90,12 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
                                     continue;
                                 }
 
-                                preview.add(new StructureBlock(blockLocation, structure.getCannotPlaceBlock()));
+                                preview.add(new StructureBlock<>(blockLocation, BlockUtil.extractData(structure.getCannotPlaceBlock())));
                             }
                             continue;
                         }
 
-
-                        if (structure.isOnlyAir() && block.getType() != Material.AIR)
-                            continue;
-
-                        preview.add(new StructureBlock(blockLocation, blockMaterial));
+                        preview.add(new StructureBlock<>(blockLocation, BlockUtil.extractData(blockMaterial)));
                     }
                 }
             }
@@ -116,7 +112,7 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
 
         val pattern = structure.getPattern();
 
-        List<StructureBlock> structureBlocks = new ArrayList<>();
+        List<StructureBlock<Object>> structureBlocks = new ArrayList<>();
 
         boolean placeBlock = false;
         for (int iteration = 0; iteration < structure.getIterations(); iteration++) {
@@ -136,17 +132,14 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
                         int offsetY = i - centerY;
 
                         Location blockLocation = origin.clone().add(offsetX, y - 1.0, offsetY);
-                        Block block = blockLocation.getBlock();
 
-                        if (!canPlace(structure, player, blockLocation))
+                        if (!canPlace(structure, player, blockLocation)) {
                             continue;
-
-                        if (structure.isOnlyAir() && block.getType() != Material.AIR)
-                            continue;
+                        }
 
                         placeBlock = true;
 
-                        structureBlocks.add(new StructureBlock(blockLocation, blockMaterial));
+                        structureBlocks.add(new StructureBlock<>(blockLocation, BlockUtil.extractData(blockMaterial)));
                     }
                 }
             }
@@ -159,7 +152,7 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
         return placeBlock;
     }
 
-    private void placePreview(Player player, List<StructureBlock> preview) {
+    private void placePreview(Player player, List<StructureBlock<Object>> preview) {
         val oldPreview = cachedPreview.get(player.getUniqueId());
 
         if (oldPreview != null) {
@@ -192,7 +185,7 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
         return compatibilities.stream().anyMatch(compatibility -> compatibility.canPlace(player, location));
     }
 
-    private List<Workload> getWorkloads(List<StructureBlock> blocks, PatternStructure structure) {
+    private List<Workload> getWorkloads(List<StructureBlock<Object>> blocks, PatternStructure structure) {
         val animationEnabled = configuration.getRoot().node("animation", "enabled").getBoolean(true);
 
         if (!animationEnabled) {

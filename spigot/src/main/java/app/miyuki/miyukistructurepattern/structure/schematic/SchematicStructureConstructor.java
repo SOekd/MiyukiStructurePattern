@@ -24,7 +24,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +34,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SchematicStructureConstructor implements StructureConstructor<SchematicStructure> {
 
-    private final Map<UUID, List<StructureBlock>> cachedPreview = Maps.newConcurrentMap();
+    private final Map<UUID, List<StructureBlock<Object>>> cachedPreview = Maps.newConcurrentMap();
 
     private final Cache<UUID, Map<String, Integer>> cachedRotations = CacheBuilder.newBuilder()
             .maximumSize(2000)
@@ -110,7 +109,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
             return;
         }
 
-        List<StructureBlock> preview = new ArrayList<>();
+        List<StructureBlock<Object>> preview = new ArrayList<>();
 
         for (Schematic.OffsetItem offsetItem : schematic.getOffsetItems()) {
 
@@ -120,7 +119,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
             int offsetY = vector.getY();
             int offsetZ = vector.getZ();
 
-            ItemStack item = offsetItem.getItem();
+            val itemData = offsetItem.getItemData();
 
             val center = schematic.getCenter();
 
@@ -133,13 +132,13 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
             Block block = blockLocation.getBlock();
 
             if (!canPlace(structure, player, blockLocation)) {
-                if (structure.getCannotPlaceBlock() != null && item.getType() != Material.AIR) {
+                if (structure.getCannotPlaceBlock() != null && BlockUtil.isAir(itemData)) {
 
                     if (structure.isOnlyAir() && block.getType() != Material.AIR) {
                         continue;
                     }
 
-                    preview.add(new StructureBlock(blockLocation, structure.getCannotPlaceBlock()));
+                    preview.add(new StructureBlock<>(blockLocation, BlockUtil.extractData(structure.getCannotPlaceBlock())));
                 }
                 continue;
             }
@@ -148,7 +147,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
                 continue;
             }
 
-            preview.add(new StructureBlock(blockLocation, item));
+            preview.add(new StructureBlock<>(blockLocation, itemData));
         }
 
         placePreview(player, preview);
@@ -179,7 +178,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
             return false;
         }
 
-        List<StructureBlock> structureBlocks = new ArrayList<>();
+        List<StructureBlock<Object>> structureBlocks = new ArrayList<>();
 
         boolean blockPlaced = false;
 
@@ -191,7 +190,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
             int offsetY = vector.getY();
             int offsetZ = vector.getZ();
 
-            val item = offsetItem.getItem();
+            val item = offsetItem.getItemData();
 
             val center = schematic.getCenter();
 
@@ -205,13 +204,9 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
                 continue;
             }
 
-            if (structure.isOnlyAir() && blockLocation.getBlock().getType() != Material.AIR) {
-                continue;
-            }
-
             blockPlaced = true;
 
-            structureBlocks.add(new StructureBlock(blockLocation, item));
+            structureBlocks.add(new StructureBlock<>(blockLocation, item));
         }
 
 
@@ -220,7 +215,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
         return blockPlaced;
     }
 
-    private void placePreview(Player player, List<StructureBlock> preview) {
+    private void placePreview(Player player, List<StructureBlock<Object>> preview) {
         val oldPreview = cachedPreview.get(player.getUniqueId());
 
         if (oldPreview != null) {
@@ -253,7 +248,7 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
         return compatibilities.stream().anyMatch(compatibility -> compatibility.canPlace(player, location));
     }
 
-    private List<Workload> getWorkloads(List<StructureBlock> blocks, SchematicStructure structure) {
+    private List<Workload> getWorkloads(List<StructureBlock<Object>> blocks, SchematicStructure structure) {
         val animationEnabled = configuration.getRoot().node("animation", "enabled").getBoolean(true);
 
         if (!animationEnabled) {
