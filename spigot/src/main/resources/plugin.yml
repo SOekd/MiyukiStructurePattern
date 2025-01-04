@@ -2,6 +2,7 @@ name: MiyukiStructurePattern
 version: 1.0.0
 main: app.miyuki.miyukistructurepattern.MiyukiStructurePattern
 author: SOekd
+api-version: 1.13
 softdepend:
   - PlotSquared
   - GriefPrevention

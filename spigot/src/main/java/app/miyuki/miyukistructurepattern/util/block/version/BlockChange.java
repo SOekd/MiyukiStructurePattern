@@ -17,8 +17,6 @@ public interface BlockChange<D> {
 
     void clearFakeBlockChange(@NotNull Player player, @NotNull List<Location> locations);
 
-    @NotNull D extractData(@NotNull Block block);
-
     @NotNull D extractData(@NotNull ItemStack itemStack);
 
     boolean isAir(@NotNull D itemData);

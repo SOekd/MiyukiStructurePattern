@@ -68,11 +68,6 @@ public class LegacyBlockChange implements BlockChange<MaterialData> {
     }
 
     @Override
-    public @NotNull MaterialData extractData(@NotNull Block block) {
-        return new MaterialData(block.getType(), block.getData());
-    }
-
-    @Override
     public @NotNull MaterialData extractData(@NotNull ItemStack itemStack) {
         return new MaterialData(itemStack.getType(), (byte) itemStack.getDurability());
     }

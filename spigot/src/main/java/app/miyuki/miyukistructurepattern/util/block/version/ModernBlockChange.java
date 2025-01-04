@@ -53,11 +53,6 @@ public class ModernBlockChange implements BlockChange<BlockData> {
     }
 
     @Override
-    public @NotNull BlockData extractData(@NotNull Block block) {
-        return block.getBlockData();
-    }
-
-    @Override
     public @NotNull BlockData extractData(@NotNull ItemStack itemStack) {
         return itemStack.getType().createBlockData();
     }

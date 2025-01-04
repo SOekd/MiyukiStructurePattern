@@ -39,10 +39,6 @@ public class BlockUtil {
         BLOCK_CHANGE.clearFakeBlockChange(player, locations);
     }
 
-    public Object extractData(Block block) {
-        return BLOCK_CHANGE.extractData(block);
-    }
-
     public Object extractData(ItemStack itemStack) {
         return BLOCK_CHANGE.extractData(itemStack);
     }
