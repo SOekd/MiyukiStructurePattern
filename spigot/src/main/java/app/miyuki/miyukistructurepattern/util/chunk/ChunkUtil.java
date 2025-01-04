@@ -1,4 +1,4 @@
-package app.miyuki.miyukistructurepattern.util.block;
+package app.miyuki.miyukistructurepattern.util.chunk;
 
 import app.miyuki.miyukistructurepattern.structure.workload.StructureBlock;
 import com.github.retrooper.packetevents.PacketEvents;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class BlockChunkUtil {
+public class ChunkUtil {
 
     public <D> Map<Vector3i, List<StructureBlock<D>>> groupStructureBlockByChunk(List<StructureBlock<D>> blocks) {
         Map<Vector3i, List<StructureBlock<D>>> chunkMap = new HashMap<>();

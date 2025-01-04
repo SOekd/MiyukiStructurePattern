@@ -18,7 +18,9 @@ public enum CompatibilityType {
     GRIEFDEFENDER("app.miyuki.miyukistructurepattern.compatibility.hooks.GriefDefender"),
     GRIEFPREVENTION("app.miyuki.miyukistructurepattern.compatibility.hooks.GriefPrevention"),
     PLOTSQUARED_LEGACY("app.miyuki.miyukistructurepattern.compatibility.hooks.PlotSquaredLegacy"),
-    PLOTSQUARED("app.miyuki.miyukistructurepattern.compatibility.hooks.PlotSquaredModern");
+    PLOTSQUARED("app.miyuki.miyukistructurepattern.compatibility.hooks.PlotSquaredModern"),
+    WORLDGUARD_LEGACY("app.miyuki.miyukistructurepattern.compatibility.hooks.WorldGuardLegacy"),
+    WORLDGUARD("app.miyuki.miyukistructurepattern.compatibility.hooks.WorldGuardModern");
 
     private static final Map<CompatibilityType, @Nullable Compatibility> COMPATIBILITY_CACHE = Maps.newHashMap();
 

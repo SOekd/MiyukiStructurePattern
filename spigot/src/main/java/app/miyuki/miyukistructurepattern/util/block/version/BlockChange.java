@@ -2,7 +2,6 @@ package app.miyuki.miyukistructurepattern.util.block.version;
 
 import app.miyuki.miyukistructurepattern.structure.workload.StructureBlock;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

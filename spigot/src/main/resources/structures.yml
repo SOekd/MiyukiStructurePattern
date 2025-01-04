@@ -16,6 +16,8 @@ cactus:
   # - PlotSquared (PlotSquared 7) (untested)
   # - GriefPrevention (untested)
   # - GriefDefender (untested)
+  # - WorldGuard-LEGACY (WorldGuard 6) (untested)
+  # - WorldGuard (WorldGuard 7) (untested)ó
   compatibility:
     - 'PLOTSQUARED-LEGACY'
 

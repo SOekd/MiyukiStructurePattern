@@ -22,6 +22,8 @@ tasks {
             "org.bstats",
             "net.kyori",
             "fr.mrmicky.fastparticles",
+            "com.github.retrooper.packetevents",
+            "io.github.retrooper.packetevents"
         ).forEach {
             relocate(it, "$internalLibs.$it")
         }

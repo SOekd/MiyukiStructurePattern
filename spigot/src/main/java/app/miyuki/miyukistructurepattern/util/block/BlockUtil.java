@@ -6,7 +6,6 @@ import app.miyuki.miyukistructurepattern.util.block.version.LegacyBlockChange;
 import app.miyuki.miyukistructurepattern.util.block.version.ModernBlockChange;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

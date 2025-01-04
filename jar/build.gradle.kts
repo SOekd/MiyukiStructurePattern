@@ -16,6 +16,8 @@ dependencies {
         "griefdefender",
         "worldedit-6",
         "worldedit-7",
+        "worldguard-6",
+        "worldguard-7"
     ).forEach {
         implementation(project(":miyukistructurepattern-$it"))
     }

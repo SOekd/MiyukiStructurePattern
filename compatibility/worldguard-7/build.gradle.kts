@@ -4,8 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.paper)
-    implementation(libs.xseries)
 
+    compileOnly(libs.worldguard.v7)
     implementation(project(":miyukistructurepattern-spigot"))
-    compileOnly(libs.worldedit.v7)
 }

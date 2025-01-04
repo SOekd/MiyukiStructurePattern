@@ -1,7 +1,7 @@
 package app.miyuki.miyukistructurepattern.util.block.version;
 
 import app.miyuki.miyukistructurepattern.structure.workload.StructureBlock;
-import app.miyuki.miyukistructurepattern.util.block.BlockChunkUtil;
+import app.miyuki.miyukistructurepattern.util.chunk.ChunkUtil;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.Vector3i;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerMultiBlockChange;
@@ -9,7 +9,6 @@ import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import lombok.val;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +20,7 @@ public class ModernBlockChange implements BlockChange<BlockData> {
 
     @Override
     public void sendFakeBlockChange(@NotNull Player player, @NotNull List<StructureBlock<BlockData>> structureBlocks) {
-        BlockChunkUtil.groupStructureBlockByChunk(structureBlocks).forEach((chunk, chunkBlocks) -> {
+        ChunkUtil.groupStructureBlockByChunk(structureBlocks).forEach((chunk, chunkBlocks) -> {
             WrapperPlayServerMultiBlockChange.EncodedBlock[] encodedBlocks = chunkBlocks.stream()
                     .map(this::createEncodedBlock)
                     .toArray(WrapperPlayServerMultiBlockChange.EncodedBlock[]::new);
@@ -43,7 +42,7 @@ public class ModernBlockChange implements BlockChange<BlockData> {
 
     @Override
     public void clearFakeBlockChange(@NotNull Player player, @NotNull List<Location> locations) {
-        BlockChunkUtil.groupLocationByChunk(locations).forEach((chunk, chunkLocations) -> {
+        ChunkUtil.groupLocationByChunk(locations).forEach((chunk, chunkLocations) -> {
             WrapperPlayServerMultiBlockChange.EncodedBlock[] blockChangeInfos = chunkLocations.stream()
                     .map(this::createEncodedBlockFromLocation)
                     .toArray(WrapperPlayServerMultiBlockChange.EncodedBlock[]::new);

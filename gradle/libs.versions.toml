@@ -25,7 +25,7 @@ fastparticles = "2.0.1"
 worldedit-v6 = "6.0.0-SNAPSHOT"
 worldedit-v7 = "7.0.0"
 
-worldguard-v6 = "6.0.0-SNAPSHOT"
+worldguard-v6 = "6.1.1-SNAPSHOT"
 worldguard-v7 = "7.0.0"
 
 
@@ -58,7 +58,7 @@ griefdefender = { module = "com.griefdefender:api", version.ref = "griefdefender
 worldedit-v6 = { module = "com.sk89q:worldedit", version.ref = "worldedit-v6" }
 worldedit-v7 = { module = "com.sk89q.worldedit:worldedit-bukkit", version.ref = "worldedit-v7" }
 
-worldguard-v6 = { module = "com.sk89q.worldguard:worldguard", version.ref = "worldguard-v6" }
+worldguard-v6 = { module = "com.sk89q:worldguard", version.ref = "worldguard-v6" }
 worldguard-v7 = { module = "com.sk89q.worldguard:worldguard-bukkit", version.ref = "worldguard-v7" }
 
 xseries = { module = "com.github.cryptomorin:XSeries", version.ref = "xseries" }
