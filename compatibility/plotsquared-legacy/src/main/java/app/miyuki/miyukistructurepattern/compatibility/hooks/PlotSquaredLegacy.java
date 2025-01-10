@@ -13,7 +13,9 @@ public class PlotSquaredLegacy implements Compatibility {
 
     @Override
     public boolean supports() {
-        return Bukkit.getPluginManager().getPlugin("PlotSquared") != null;
+        val plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
+        return Bukkit.getPluginManager().getPlugin("PlotSquared") != null
+                && plugin.getDescription().getVersion().startsWith("3.");
     }
 
     @Override

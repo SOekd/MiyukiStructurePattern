@@ -26,9 +26,13 @@ public class StructureWorkload implements Workload {
 
         BlockUtil.setType(structureBlock);
 
-        val particle = structure.getParticle();
-        if (particle != null) {
-            particle.spawn(blockLocation.getWorld(), blockLocation, structure.getParticleAmount());
+        try {
+            val particle = structure.getParticle();
+            if (particle != null) {
+                particle.spawn(blockLocation.getWorld(), blockLocation, structure.getParticleAmount());
+            }
+        } catch (Exception ignored) {
+
         }
 
         if (structure.getSound() != null) {

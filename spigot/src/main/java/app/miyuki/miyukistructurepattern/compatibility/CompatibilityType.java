@@ -33,6 +33,9 @@ public enum CompatibilityType {
         }
         try {
             Compatibility compatibility = (Compatibility) Class.forName(className).getDeclaredConstructor().newInstance();
+            if (!compatibility.supports()) {
+                return null;
+            }
             COMPATIBILITY_CACHE.put(this, compatibility);
             return compatibility;
         } catch (Exception e) {
@@ -45,7 +48,6 @@ public enum CompatibilityType {
                 .filter(type -> type.name().equalsIgnoreCase(name.replace("-", "_")))
                 .map(CompatibilityType::getCompatibility)
                 .filter(Objects::nonNull)
-                .filter(Compatibility::supports)
                 .findAny()
                 .orElse(null);
     }

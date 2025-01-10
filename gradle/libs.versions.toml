@@ -15,7 +15,7 @@ itemnbtapi = "2.14.1"
 bstats = "3.0.2"
 
 plotsquared-legacy = "3.823"
-plotsquared-modern = "1.43"
+plotsquared-modern = "1.52"
 
 griefprevention = "16.18.2"
 griefdefender = "2.1.0-SNAPSHOT"

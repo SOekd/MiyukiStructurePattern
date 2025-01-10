@@ -13,7 +13,8 @@ public class PlotSquaredModern implements Compatibility {
 
     @Override
     public boolean supports() {
-        return Bukkit.getPluginManager().getPlugin("PlotSquared") != null;
+        val plugin = Bukkit.getPluginManager().getPlugin("PlotSquared");
+        return plugin != null && plugin.getDescription().getVersion().startsWith("7.");
     }
 
     @Override

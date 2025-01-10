@@ -16,7 +16,10 @@ public class WorldGuardLegacy implements Compatibility {
 
     @Override
     public boolean supports() {
-        return Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().getPlugin("WorldEdit") != null;
+        val worldGuardPlugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+        return worldGuardPlugin != null
+                && worldGuardPlugin.getDescription().getVersion().startsWith("6.")
+                && Bukkit.getPluginManager().getPlugin("WorldEdit") != null;
     }
 
     @Override
