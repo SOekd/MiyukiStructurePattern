@@ -2,6 +2,7 @@ package app.miyuki.miyukistructurepattern.structure.pattern;
 
 import app.miyuki.miyukistructurepattern.compatibility.CompatibilityType;
 import app.miyuki.miyukistructurepattern.configuration.Configuration;
+import app.miyuki.miyukistructurepattern.constants.Permissions;
 import app.miyuki.miyukistructurepattern.structure.StructureAnimationDirectionType;
 import app.miyuki.miyukistructurepattern.structure.StructureConstructor;
 import app.miyuki.miyukistructurepattern.structure.workload.AnimatedStructureWorkload;
@@ -174,12 +175,17 @@ public class PatternStructureConstructor implements StructureConstructor<Pattern
 
     private boolean canPlace(@NotNull PatternStructure structure, @NotNull Player player, @NotNull Location location) {
         val compatibilities = CompatibilityType.getStructureCompatibilities(structure);
+
+        if (location.getWorld().getMaxHeight() < location.getBlockY()) {
+            return false;
+        }
+
         if (compatibilities.isEmpty()) {
             return true;
         }
 
-        if (location.getWorld().getMaxHeight() < location.getBlockY()) {
-            return false;
+        if (player.hasPermission(Permissions.BYPASS_PROTECTION)) {
+            return true;
         }
 
         return compatibilities.stream().anyMatch(compatibility -> compatibility.canPlace(player, location));

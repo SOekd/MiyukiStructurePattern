@@ -9,4 +9,6 @@ public class Permissions {
 
     public static final String RELOAD = "miyukistructurepattern.reload";
 
+    public static final String BYPASS_PROTECTION = "miyukistructurepattern.bypassprotection";
+
 }

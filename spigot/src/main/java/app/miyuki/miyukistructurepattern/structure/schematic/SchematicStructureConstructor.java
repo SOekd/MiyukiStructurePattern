@@ -2,6 +2,7 @@ package app.miyuki.miyukistructurepattern.structure.schematic;
 
 import app.miyuki.miyukistructurepattern.compatibility.CompatibilityType;
 import app.miyuki.miyukistructurepattern.configuration.Configuration;
+import app.miyuki.miyukistructurepattern.constants.Permissions;
 import app.miyuki.miyukistructurepattern.schematic.Schematic;
 import app.miyuki.miyukistructurepattern.schematic.SchematicReader;
 import app.miyuki.miyukistructurepattern.structure.StructureAnimationDirectionType;
@@ -238,6 +239,10 @@ public class SchematicStructureConstructor implements StructureConstructor<Schem
     private boolean canPlace(@NotNull SchematicStructure structure, @NotNull Player player, @NotNull Location location) {
         val compatibilities = CompatibilityType.getStructureCompatibilities(structure);
         if (compatibilities.isEmpty()) {
+            return true;
+        }
+
+        if (player.hasPermission(Permissions.BYPASS_PROTECTION)) {
             return true;
         }
 
